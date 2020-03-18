@@ -1,4 +1,4 @@
-module github.com/jinares/vmysql
+module github.com/jinares/xmysql
 
 go 1.13
 
