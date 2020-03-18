@@ -1,6 +1,7 @@
 package xmysql
 
 import (
+	"github.com/jinares/gopkg/xtools"
 	"github.com/siddontang/go-mysql/canal"
 	"github.com/siddontang/go-mysql/mysql"
 	"github.com/siddontang/go-mysql/replication"
@@ -22,13 +23,16 @@ type SyncEventHandler struct {
 	SyncData  RowDataHandler
 }
 
-
+func (h *SyncEventHandler) OnRotate(revent *replication.RotateEvent) error {
+	ulog.Info("OnRotate:", xtools.JSONToStr(revent))
+	return nil
+}
 func (h *SyncEventHandler) OnXID(pos mysql.Position) error {
-	ulog.Info(pos.Name,pos.Pos)
+	ulog.Info("OnXID:", pos.Name, pos.Pos)
 	return nil
 }
 func (h *SyncEventHandler) OnDDL(nextPos mysql.Position, queryEvent *replication.QueryEvent) error {
-	ulog.Info(string(queryEvent.Query),queryEvent.Schema)
+	ulog.Info("OnDDL:", string(queryEvent.Query), queryEvent.Schema)
 	return nil
 }
 func (h *SyncEventHandler) String() string { return "SyncEventHandler" }
